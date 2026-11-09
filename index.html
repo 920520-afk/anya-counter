@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Когда последний раз Аня плакала?</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #080808;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+main { width: 100%; max-width: 620px; }
+h1 {
+  font-size: clamp(25px, 6vw, 42px);
+  font-weight: 400;
+  margin-bottom: 42px;
+}
+.photo {
+  width: 100%;
+  max-width: 340px;
+  height: 340px;
+  object-fit: cover;
+  filter: grayscale(100%);
+  margin-bottom: 35px;
+}
+.counter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 12px;
+}
+.number {
+  font-size: clamp(30px, 8vw, 48px);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+.unit {
+  color: #888;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 8px;
+}
+footer {
+  color: #555;
+  font-size: 12px;
+  margin-top: 45px;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Когда последний раз Аня плакала?</h1>
+<img class="photo" src="anya.jpg" alt="Аня">
+<div class="counter">
+  <div><div class="number" id="years">0</div><div class="unit">лет</div></div>
+  <div><div class="number" id="months">0</div><div class="unit">месяцев</div></div>
+  <div><div class="number" id="days">0</div><div class="unit">дней</div></div>
+  <div><div class="number" id="hours">0</div><div class="unit">часов</div></div>
+  <div><div class="number" id="minutes">0</div><div class="unit">минут</div></div>
+  <div><div class="number" id="seconds">0</div><div class="unit">секунд</div></div>
+</div>
+<footer>С 31 октября 2026 года</footer>
+</main>
+<script>
+function update() {
+  const start = new Date(2026, 9, 31, 0, 0, 0);
+  const now = new Date();
+  let years = now.getFullYear() - start.getFullYear();
+  let months = now.getMonth() - start.getMonth();
+  let anchor = new Date(start);
+  anchor.setFullYear(anchor.getFullYear() + years);
+  if (anchor > now) {
+    years--;
+    anchor = new Date(start);
+    anchor.setFullYear(anchor.getFullYear() + years);
+  }
+  months = 0;
+  while (true) {
+    const next = new Date(anchor);
+    next.setMonth(next.getMonth() + 1);
+    if (next > now) break;
+    anchor = next;
+    months++;
+  }
+  let rest = now - anchor;
+  const days = Math.floor(rest / 86400000);
+  rest %= 86400000;
+  const hours = Math.floor(rest / 3600000);
+  rest %= 3600000;
+  const minutes = Math.floor(rest / 60000);
+  const seconds = Math.floor((rest % 60000) / 1000);
+  document.getElementById('years').textContent = years;
+  document.getElementById('months').textContent = months;
+  document.getElementById('days').textContent = days;
+  document.getElementById('hours').textContent = hours;
+  document.getElementById('minutes').textContent = minutes;
+  document.getElementById('seconds').textContent = seconds;
+}
+update();
+setInterval(update, 1000);
+</script>
+</body>
+</html>
